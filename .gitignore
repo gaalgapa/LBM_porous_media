@@ -1,0 +1,23 @@
+# Datos y resultados
+*.bin
+*.vti
+*.vtk
+runs/
+database/
+
+# Compilados
+*.o
+*.out
+lbm_sim
+*.ptx
+
+# Entorno virtual
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# VSCode local
+.vscode/settings.json

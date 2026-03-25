@@ -1,7 +1,8 @@
 # ================================================================
-# Define las rutas del proyecto en un solo lugar
+# Define rutas donde se encuentran programas, archivos y resultados
 # ================================================================
 
+from datetime import datetime
 from pathlib import Path
 
 # ── Raíz del proyecto (donde está este archivo) ─────────────────
@@ -21,11 +22,11 @@ EXECUTABLE   = CUDA_DIR / "lbm_sim"
 # ── Datos en Google Drive ────────────────────────────────────────
 # En tu PC: Drive accesible desde el explorador de archivos
 # En Colab: /content/drive/MyDrive/
-# La función get_data_root() detecta automáticamente dónde estás
 
 def get_data_root() -> Path:
     """
-    Devuelve la raíz de datos según el entorno donde se ejecuta.
+    Detecta automáticamente dónde estás y devuelve
+      la raíz de datos según el entorno donde se ejecuta.
     - En Colab: /content/drive/MyDrive/LBM_Experiments
     - En PC local: ~/GoogleDrive/LBM_Experiments (si existe el enlace)
     - Fallback: ~/LBM_Experiments (crea la carpeta localmente)
@@ -43,11 +44,10 @@ def get_data_root() -> Path:
     # Fallback: carpeta local sin Drive
     fallback = PROJECT_ROOT / "LBM_Experiments"
     fallback.mkdir(parents=True, exist_ok=True)
-    print(f"⚠️  Drive no encontrado. Usando carpeta local: {fallback}")
+    print(f"⚠️ Drive no encontrado. Usando carpeta local: {fallback}")
     return fallback
 
-
-# ── Subcarpetas de datos ─────────────────────────────────────────
+# ── Subcarpetas de bases de datos ────────────────────────
 def get_runs_dir() -> Path:
     path = get_data_root() / "runs"
     path.mkdir(parents=True, exist_ok=True)
@@ -58,16 +58,12 @@ def get_database_dir() -> Path:
     path.mkdir(parents=True, exist_ok=True)
     return path
 
-
-# ── Utilidad: nombre de run con fecha y hora ─────────────────────
-from datetime import datetime
-
 def new_run_name(label: str = "") -> str:
     """
     Genera un nombre único para una run basado en fecha y hora.
     Ejemplo: '2026-03-20_14-32_canal-libre'
     """
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M")
     if label:
         # Reemplaza espacios por guiones para nombres de carpeta limpios
         label_clean = label.strip().replace(" ", "-").lower()

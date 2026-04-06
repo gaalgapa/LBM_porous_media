@@ -58,8 +58,7 @@ def compute_params(Re_dp, dp_m, phi, Lx_m, Ly_m, rho_phy, mu_phy, tau, Nx):
 
     # ── Gradientes de presión analíticos ────────────────────────
     dP_L_darcy = (mu_phy / K_phy) * u_darcy_phy
-    dP_L_ergun = dP_L_darcy + \
-                 (F_eps * rho_phy * u_darcy_phy**2) / np.sqrt(K_phy)
+    dP_L_ergun = dP_L_darcy + (F_eps * rho_phy * u_darcy_phy**2) / np.sqrt(K_phy)
 
     # ── Tiempo de simulación ─────────────────────────────────────
     t_diff = int(Ny*10 / nu_lbm)

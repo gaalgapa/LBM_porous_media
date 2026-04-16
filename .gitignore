@@ -18,6 +18,7 @@ lbm_sim
 __pycache__/
 *.pyc
 .env
+.gitignore
 
 # VSCode local
 .vscode/settings.json

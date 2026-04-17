@@ -50,7 +50,7 @@ float* d_ux_prev;
 float* d_uy_prev;
 float* d_num;
 float* d_den;
-bool*  d_obstacle;
+uint8_t*  d_obstacle;
 
 // ================================================================
 // Lectura de config.json
@@ -194,6 +194,31 @@ void initialize(const SimParams& p,
 }
 
 // ================================================================
+// Kernel de Error (Convergencia)
+// ================================================================
+__global__ void error_kernel(const float* ux, const float* uy,
+                             const float* ux_prev, const float* uy_prev,
+                             float* num, float* den,
+                             const uint8_t* obstacle, SimParams p)
+{
+    int ix = blockIdx.x * blockDim.x + threadIdx.x;
+    int iy = blockIdx.y * blockDim.y + threadIdx.y;
+
+    if (ix < p.Nx && iy < p.Ny) {
+        int i = ix * p.Ny + iy;
+        if (obstacle[i] == 0) { // 0 significa que es fluido
+            float dux = ux[i] - ux_prev[i];
+            float duy = uy[i] - uy_prev[i];
+            num[i] = dux * dux + duy * duy; // Diferencia al cuadrado
+            den[i] = ux[i] * ux[i] + uy[i] * uy[i]; // Velocidad al cuadrado
+        } else {
+            num[i] = 0.0f;
+            den[i] = 0.0f;
+        }
+    }
+}
+
+// ================================================================
 // Bucle principal
 // ================================================================
 void run(const SimParams& p,
@@ -290,6 +315,8 @@ void run(const SimParams& p,
             write_vti(vti_path, d_ux, d_uy, d_rho,
                       d_obstacle, p, t);
         }
+
+        t++;
     }
 
     // ── Guardar resultados finales ───────────────────────────────

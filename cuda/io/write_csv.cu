@@ -4,10 +4,14 @@
 // Estos son los archivos que lee postprocess.py.
 // ================================================================
 
+#include <cstdint>
+#include <iostream>       // Para solucionar los errores de std::cerr y std::cout
 #include <fstream>
 #include <string>
 #include <vector>
 #include <cmath>
+#include <cuda_runtime.h> // Buena práctica de seguridad
+#include "../d2q9.cuh"    // Para solucionar el error de "Q is undefined"
 #include "../headers.cuh"
 
 // ── Métricas finales ─────────────────────────────────────────────
@@ -88,17 +92,14 @@ void write_profile_csv(const std::string& fpath,
 
     // Copiar a host
     std::vector<float>   h_ux(N), h_uy(N);
-    std::vector<uint8_t> h_obs_raw(N);
-    std::vector<bool>    h_obs(N);
+    std::vector<uint8_t>    h_obs(N);
 
     cudaMemcpy(h_ux.data(),      d_ux,
                N*sizeof(float), cudaMemcpyDeviceToHost);
     cudaMemcpy(h_uy.data(),      d_uy,
                N*sizeof(float), cudaMemcpyDeviceToHost);
-    cudaMemcpy(h_obs_raw.data(), d_obstacle,
-               N*sizeof(bool),  cudaMemcpyDeviceToHost);
-    for (int i = 0; i < N; i++)
-        h_obs[i] = (h_obs_raw[i] != 0);
+    cudaMemcpy(h_obs.data(), d_obstacle,
+                N*sizeof(uint8_t),  cudaMemcpyDeviceToHost);
 
     // Para cada y: promediar ux y uy sobre todas las x de fluido
     std::vector<double> sum_ux(p.Ny, 0.0);

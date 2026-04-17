@@ -21,12 +21,9 @@ static void d2h_float(const float* d_ptr, std::vector<float>& h_vec,
                n * sizeof(float), cudaMemcpyDeviceToHost);
 }
 
-static void d2h_bool(const bool* d_ptr, std::vector<uint8_t>& h_vec, int n)
+static void d2h_uint8(const uint8_t* d_ptr, std::vector<uint8_t>& h_vec, int n) // <-- Cambio a uint8_t*
 {
-    // Redimensionar el vector de salida
     h_vec.resize(n);
-    
-    // Copiar DIRECTAMENTE de la GPU a nuestro vector (¡Nos ahorramos tmp y el bucle!)
     cudaMemcpy(h_vec.data(), d_ptr, n * sizeof(uint8_t), cudaMemcpyDeviceToHost);
 }
 
@@ -48,7 +45,7 @@ void write_vti(const std::string& fpath,
     d2h_float(d_ux,       h_ux,  N);
     d2h_float(d_uy,       h_uy,  N);
     d2h_float(d_rho,      h_rho, N);
-    d2h_bool (d_obstacle, h_obs, N);
+    d2h_uint8(d_obstacle, h_obs, N);
 
     // Convertir a unidades físicas
     // ux, uy: [lu/ts] → [m/s]

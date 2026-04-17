@@ -1,0 +1,18 @@
+# Datos y resultados
+*.bin
+*.vti
+*.vtk
+*.csv
+runs/
+database/
+.venv
+
+# Compilados
+*.o
+*.out
+lbm_sim
+
+# Python
+__pycache__/
+*.pyc
+.env/

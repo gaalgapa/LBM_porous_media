@@ -5,6 +5,7 @@
 // Guarda en unidades físicas (m/s, Pa) no en lattice units.
 // ================================================================
 
+#include <cstdint>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -20,15 +21,13 @@ static void d2h_float(const float* d_ptr, std::vector<float>& h_vec,
                n * sizeof(float), cudaMemcpyDeviceToHost);
 }
 
-static void d2h_bool(const bool* d_ptr, std::vector<uint8_t>& h_vec,
-                      int n)
+static void d2h_bool(const bool* d_ptr, std::vector<uint8_t>& h_vec, int n)
 {
-    std::vector<bool> tmp(n);
-    cudaMemcpy(tmp.data(), d_ptr,
-               n * sizeof(bool), cudaMemcpyDeviceToHost);
+    // Redimensionar el vector de salida
     h_vec.resize(n);
-    for (int i = 0; i < n; i++)
-        h_vec[i] = tmp[i] ? 1 : 0;
+    
+    // Copiar DIRECTAMENTE de la GPU a nuestro vector (¡Nos ahorramos tmp y el bucle!)
+    cudaMemcpy(h_vec.data(), d_ptr, n * sizeof(uint8_t), cudaMemcpyDeviceToHost);
 }
 
 // ── Función principal ────────────────────────────────────────────

@@ -15,6 +15,7 @@
 //   7. VTI + CSV al converger o cada save_every pasos
 // ================================================================
 
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -136,7 +137,7 @@ void initialize(const SimParams& p,
 {
     size_t sz_f   = (size_t)p.Nx * p.Ny * Q * sizeof(float);
     size_t sz_mac = (size_t)p.Nx * p.Ny * sizeof(float);
-    size_t sz_obs = (size_t)p.Nx * p.Ny * sizeof(bool);
+    size_t sz_obs = (size_t)p.Nx * p.Ny * sizeof(uint8_t);
 
     CUDA_CHECK(cudaMalloc(&d_f,        sz_f));
     CUDA_CHECK(cudaMalloc(&d_fnew,     sz_f));
@@ -151,7 +152,7 @@ void initialize(const SimParams& p,
 
     // Cargar máscara de obstáculos
     std::vector<uint8_t> h_mask_raw(p.Nx * p.Ny);
-    std::vector<bool>    h_obs(p.Nx * p.Ny, false);
+    std::vector<uint8_t> h_obs(p.Nx * p.Ny, 0);
 
     std::ifstream mfile(mask_path, std::ios::binary);
     if (mfile.is_open()) {
@@ -159,7 +160,7 @@ void initialize(const SimParams& p,
                    p.Nx * p.Ny);
         mfile.close();
         for (int i = 0; i < p.Nx * p.Ny; i++)
-            h_obs[i] = (h_mask_raw[i] != 0);
+            h_obs[i] = (h_mask_raw[i] != 0) ? 1 : 0;
         std::cout << "✔ Máscara cargada: " << mask_path << "\n";
     } else {
         std::cerr << "⚠️  Máscara no encontrada. Sin obstáculos.\n";

@@ -50,7 +50,7 @@ float* d_ux_prev;
 float* d_uy_prev;
 float* d_num;
 float* d_den;
-uint8_t*  d_obstacle;
+bool*  d_obstacle;
 
 // ================================================================
 // Lectura de config.json
@@ -199,7 +199,7 @@ void initialize(const SimParams& p,
 __global__ void error_kernel(const float* ux, const float* uy,
                              const float* ux_prev, const float* uy_prev,
                              float* num, float* den,
-                             const uint8_t* obstacle, SimParams p)
+                             const bool* obstacle, SimParams p)
 {
     int ix = blockIdx.x * blockDim.x + threadIdx.x;
     int iy = blockIdx.y * blockDim.y + threadIdx.y;

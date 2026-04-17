@@ -1,0 +1,32 @@
+{
+    "Re_dp"        : 1.0,
+    "dp_m"         : 0.005,
+    "phi"          : 0.48,
+    "Lx_m"         : 0.10,
+    "Ly_m"         : 0.033,
+    "rho_phy"      : 1.204,
+    "mu_phy"       : 1.825e-5,
+
+    "Nx"           : 300,
+    "Ny"           : 99,
+    "c_l"          : 3.333e-4,
+    "c_t"          : 7.246e-7,
+
+    "tau"          : 0.8,
+    "nu_lbm"       : 0.1,
+    "u_inlet_lbm"  : 6.0e-4,
+    "u_darcy_lbm"  : 2.88e-4,
+
+    "t_max"        : 500000,
+    "max_diff"     : 1.0e-8,
+    "save_every"   : 50000,
+    "ckpt_every"   : 10000,
+
+    "K_phy"        : 2.1e-8,
+    "dP_L_darcy"   : 1.24e2,
+    "dP_L_ergun"   : 1.31e2,
+
+    "label"        : "ejemplo_base",
+    "geometry"     : 3,
+    "n_seeds"      : 5
+}

@@ -50,7 +50,7 @@ float* d_ux_prev;
 float* d_uy_prev;
 float* d_num;
 float* d_den;
-bool*  d_obstacle;
+uint8_t*  d_obstacle;
 
 // ================================================================
 // Lectura de config.json
@@ -199,7 +199,7 @@ void initialize(const SimParams& p,
 __global__ void error_kernel(const float* ux, const float* uy,
                              const float* ux_prev, const float* uy_prev,
                              float* num, float* den,
-                             const bool* obstacle, SimParams p)
+                             const uint8_t* obstacle, SimParams p)
 {
     int ix = blockIdx.x * blockDim.x + threadIdx.x;
     int iy = blockIdx.y * blockDim.y + threadIdx.y;
@@ -243,20 +243,16 @@ void run(const SimParams& p,
     while (t < p.t_max && !converged) {
 
         // ── (1) Macroscópicos ────────────────────────────────────
-        macro_kernel<<<grid, block>>>(d_f, d_rho, d_ux, d_uy,
-                                       d_obstacle, p);
+        macro_kernel<<<grid, block>>>(d_f, d_rho, d_ux, d_uy, d_obstacle, p);
 
         // ── (2) Colisión ─────────────────────────────────────────
-        collision_kernel<<<grid, block>>>(d_f, d_fnew, d_rho,
-                                           d_ux, d_uy,
-                                           d_obstacle, p);
+        collision_kernel<<<grid, block>>>(d_f, d_fnew, d_rho, d_ux, d_uy,d_obstacle, p);
 
-        // ── (3) Frontera ─────────────────────────────────────────
+        // ── (3) Streaming ────────────────────────────────────────
+        streaming_kernel<<<grid, block>>>(d_fnew, d_f, d_obstacle, p);
+
+        // ── (4) Frontera ─────────────────────────────────────────
         boundary_kernel<<<grid, block>>>(d_fnew, d_obstacle, p);
-
-        // ── (4) Streaming ────────────────────────────────────────
-        streaming_kernel<<<grid, block>>>(d_fnew, d_f,
-                                           d_obstacle, p);
 
         CUDA_CHECK(cudaDeviceSynchronize());
 

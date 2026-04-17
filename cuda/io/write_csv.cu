@@ -84,7 +84,7 @@ void write_metrics_csv(const std::string& fpath,
 void write_profile_csv(const std::string& fpath,
                         const float* d_ux,
                         const float* d_uy,
-                        const bool*  d_obstacle,
+                        const uint8_t*  d_obstacle,
                         const SimParams& p,
                         int seed)
 {

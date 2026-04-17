@@ -4,6 +4,7 @@
 // ================================================================
 
 #pragma once
+#include <cstdint>
 #include <cuda_runtime.h>
 #include <string>
 
@@ -47,7 +48,7 @@ __global__ void macro_kernel(const float* f,
                               float* rho,
                               float* ux,
                               float* uy,
-                              const bool* obstacle,
+                              const uint8_t* obstacle,
                               const SimParams p);
 
 // Colisión BGK
@@ -56,18 +57,18 @@ __global__ void collision_kernel(const float* f,
                                   const float* rho,
                                   const float* ux,
                                   const float* uy,
-                                  const bool* obstacle,
+                                  const uint8_t* obstacle,
                                   const SimParams p);
 
 // Condiciones de frontera
 __global__ void boundary_kernel(float* fnew,
-                                 const bool* obstacle,
+                                 const uint8_t* obstacle,
                                  const SimParams p);
 
 // Streaming
 __global__ void streaming_kernel(const float* fnew,
                                   float* f,
-                                  const bool* obstacle,
+                                  const uint8_t* obstacle,
                                   const SimParams p);
 
 // Error de convergencia
@@ -77,7 +78,7 @@ __global__ void error_kernel(const float* ux,
                               const float* uy_prev,
                               float* num,
                               float* den,
-                              const bool* obstacle,
+                              const uint8_t* obstacle,
                               const SimParams p);
 
 // ── Funciones de entrada/salida ──────────────────────────────────
@@ -86,7 +87,7 @@ void write_vti(const std::string& fpath,
                const float* ux,
                const float* uy,
                const float* rho,
-               const bool*  obstacle,
+               const uint8_t*  obstacle,
                const SimParams& p,
                int timestep);
 
@@ -101,7 +102,7 @@ void write_metrics_csv(const std::string& fpath,
 void write_profile_csv(const std::string& fpath,
                        const float* ux,
                        const float* uy,
-                       const bool*  obstacle,
+                       const uint8_t*  obstacle,
                        const SimParams& p,
                        int seed);
 

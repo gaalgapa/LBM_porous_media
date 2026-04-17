@@ -35,7 +35,7 @@ void write_vti(const std::string& fpath,
                const float* d_ux,
                const float* d_uy,
                const float* d_rho,
-               const bool*  d_obstacle,
+               const uint8_t*  d_obstacle,
                const SimParams& p,
                int timestep)
 {

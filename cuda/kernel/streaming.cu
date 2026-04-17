@@ -11,7 +11,7 @@
 __global__
 void streaming_kernel(const float* fnew,
                        float* f,
-                       const bool* obstacle,
+                       const uint8_t* obstacle,
                        const SimParams p)
 {
     int ix = blockIdx.x * blockDim.x + threadIdx.x;

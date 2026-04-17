@@ -11,7 +11,7 @@
 
 __global__
 void boundary_kernel(float* f,
-                      const bool* obstacle,
+                      const uint8_t* obstacle,
                       const SimParams p)
 {
     // Cada hilo maneja una celda de frontera

@@ -40,7 +40,7 @@ void initialize_kernel(float* f, float* rho,
 __global__
 void macro_kernel(const float* f,
                    float* rho, float* ux, float* uy,
-                   const bool* obstacle,
+                   const uint8_t* obstacle,
                    const SimParams p)
 {
     int ix = blockIdx.x * blockDim.x + threadIdx.x;

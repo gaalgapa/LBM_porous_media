@@ -14,7 +14,7 @@ void collision_kernel(const float* f,
                        const float* rho,
                        const float* ux,
                        const float* uy,
-                       const bool* obstacle,
+                       const uint8_t* obstacle,
                        const SimParams p)
 {
     int ix = blockIdx.x * blockDim.x + threadIdx.x;

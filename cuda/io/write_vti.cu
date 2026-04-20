@@ -83,32 +83,32 @@ void write_vti(const std::string& fpath,
     // ── ux ───────────────────────────────────────────────────────
     f << "        <DataArray type=\"Float32\" Name=\"ux_ms\" "
       << "format=\"ascii\">\n         ";
-    for (int ix = 0; ix < p.Nx; ix++)
-        for (int iy = 0; iy < p.Ny; iy++)
+    for (int iy = 0; iy < p.Ny; iy++)
+        for (int ix = 0; ix < p.Nx; ix++)
             f << " " << ux_phy[ix * p.Ny + iy];
     f << "\n        </DataArray>\n";
 
     // ── uy ───────────────────────────────────────────────────────
     f << "        <DataArray type=\"Float32\" Name=\"uy_ms\" "
       << "format=\"ascii\">\n         ";
-    for (int ix = 0; ix < p.Nx; ix++)
-        for (int iy = 0; iy < p.Ny; iy++)
+    for (int iy = 0; iy < p.Ny; iy++)
+        for (int ix = 0; ix < p.Nx; ix++)
             f << " " << uy_phy[ix * p.Ny + iy];
     f << "\n        </DataArray>\n";
 
     // ── presión ──────────────────────────────────────────────────
     f << "        <DataArray type=\"Float32\" Name=\"pressure_Pa\" "
       << "format=\"ascii\">\n         ";
-    for (int ix = 0; ix < p.Nx; ix++)
-        for (int iy = 0; iy < p.Ny; iy++)
+    for (int iy = 0; iy < p.Ny; iy++)
+        for (int ix = 0; ix < p.Nx; ix++)
             f << " " << pre_phy[ix * p.Ny + iy];
     f << "\n        </DataArray>\n";
 
     // ── magnitud de velocidad ────────────────────────────────────
     f << "        <DataArray type=\"Float32\" Name=\"u_mag_ms\" "
       << "format=\"ascii\">\n         ";
-    for (int ix = 0; ix < p.Nx; ix++)
-        for (int iy = 0; iy < p.Ny; iy++) {
+    for (int iy = 0; iy < p.Ny; iy++)
+        for (int ix = 0; ix < p.Nx; ix++) {
             int i = ix * p.Ny + iy;
             f << " " << sqrtf(ux_phy[i]*ux_phy[i] +
                                uy_phy[i]*uy_phy[i]);
@@ -118,8 +118,8 @@ void write_vti(const std::string& fpath,
     // ── obstáculo ────────────────────────────────────────────────
     f << "        <DataArray type=\"UInt8\" Name=\"obstacle\" "
       << "format=\"ascii\">\n         ";
-    for (int ix = 0; ix < p.Nx; ix++)
-        for (int iy = 0; iy < p.Ny; iy++)
+    for (int iy = 0; iy < p.Ny; iy++)
+        for (int ix = 0; ix < p.Nx; ix++)
             f << " " << (int)h_obs[ix * p.Ny + iy];
     f << "\n        </DataArray>\n";
 

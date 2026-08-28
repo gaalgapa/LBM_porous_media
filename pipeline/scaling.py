@@ -62,7 +62,7 @@ def compute_params(Re_dp, dp_m, phi, Lx_m, Ly_m, rho_phy, mu_phy, tau, Nx):
 
     # ── Tiempo de simulación ─────────────────────────────────────
     t_diff = int(Ny*10 / nu_lbm)
-    t_max  = t_diff * 5
+    t_max  = t_diff * 2
 
     # ── Empacar todo en un diccionario ───────────────────────────
     p = {
